@@ -1,6 +1,22 @@
 const express = require('express');
+const cors = require('cors'); // <-- ADD THIS LINE
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+// CORS configuration - Allow your Vercel frontend
+const corsOptions = {
+  origin: 'https://careersasa.vercel.app', // Your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
+// Apply CORS middleware to ALL routes
+app.use(cors(corsOptions));
+
+// Handle preflight OPTIONS requests for all routes
+app.options('*', cors(corsOptions));
 
 // Health check - ALWAYS WORKS
 app.get('/health', (req, res) => {

@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initDb = void 0;
+exports.initializeDatabase = void 0;
 const client_1 = require("./client");
-function initDb() {
-    client_1.db.exec(`
+async function initializeDatabase() {
+    console.log('Initializing database...');
+    const db = await (0, client_1.openDb)();
+    await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -46,5 +48,7 @@ function initDb() {
       FOREIGN KEY(assessment_id) REFERENCES assessments(id)
     );
   `);
+    console.log('Database initialized');
+    await db.close();
 }
-exports.initDb = initDb;
+exports.initializeDatabase = initializeDatabase;

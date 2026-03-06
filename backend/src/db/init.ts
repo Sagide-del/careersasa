@@ -1,7 +1,11 @@
-﻿import { db } from "./client";
+import { openDb } from './client';
 
-export function initDb() {
-  db.exec(`
+export async function initializeDatabase() {
+  console.log('Initializing database...');
+  
+  const db = await openDb();
+
+  await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -44,4 +48,7 @@ export function initDb() {
       FOREIGN KEY(assessment_id) REFERENCES assessments(id)
     );
   `);
+
+  console.log('Database initialized');
+  await db.close();
 }
